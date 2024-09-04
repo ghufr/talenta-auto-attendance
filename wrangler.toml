@@ -1,0 +1,23 @@
+name = "talenta-auto-attendance-v2"
+main = "src/worker.js"
+compatibility_date = "2024-09-03"
+compatibility_flags = ["nodejs_compat"]
+
+[triggers]
+crons = [
+	"5 9 * * mon,tue,wed",
+	"57 0 * * mon,tue,wed",
+	"5 9 * * thu,fri",
+	"55 0 * * thu,fri"
+]
+
+[vars]
+HOUR_ID = ""
+ORGANIZATION_ID = ""
+USER_ID = ""
+CRONS = [
+	["5 9 * * mon,tue,wed", "clock_in", 1.14,104.11],
+	["57 0 * * mon,tue,wed", "clock_out", 1.14,104.11],
+	["5 9 * * thu,fri", "clock_in", 1.14,104.11],
+	["55 0 * * thu,fri", "clock_out", 1.14,104.11]
+]
