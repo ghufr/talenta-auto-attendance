@@ -6,7 +6,6 @@ const postClock = (data, env) => {
 			'accept-language': 'en-US,en;q=0.7',
 			authorization: `Bearer ${env.ACCESS_TOKEN}`,
 			'cache-control': 'no-cache',
-			'content-type': 'application/json',
 			dnt: '1',
 			origin: 'https://hr.talenta.co',
 			pragma: 'no-cache',
@@ -35,8 +34,7 @@ export default {
 			timeZone: 'Asia/Jakarta',
 		});
 
-		const crons = JSON.parse(env.CRONS || []);
-		const [_, eventType, latitude, longitude] = crons.find((cron) => cron[0] === event.cron);
+		const [_, eventType, latitude, longitude] = env.CRONS.find((cron) => cron[0] === event.cron) ?? [];
 
 		if (!eventType) {
 			console.log('SKIP: no eventType');
