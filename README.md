@@ -17,10 +17,10 @@ A cloudflare worker script to call talenta api and simulate the check in and che
   # All the cron is in UTC time
   [triggers]
   crons = [
-  	"5 9 * * mon,tue,wed", # clock in time (monday - wednesday)
-  	"57 0 * * mon,tue,wed", # clock out time (monday - wednesday)
-  	"5 9 * * thu,fri", # clock in time (thursday, friday)
-  	"55 0 * * thu,fri" # clock out time (thursday, friday)
+  	"57 0 * * mon,tue,wed", # clock in time (monday - wednesday)
+  	"5 9 * * mon,tue,wed", # clock out  time (monday - wednesday)
+  	"55 0 * * thu,fri", # clock in time (thursday, friday)
+  	"5 9 * * thu,fri" # clock out time (thursday, friday)
   ]
 
   [vars]
@@ -33,10 +33,10 @@ A cloudflare worker script to call talenta api and simulate the check in and che
   	# Item 2: event type (clock_in / clock_out)
   	# Item 3: latitude
   	# Item 4: longitude
-  	["5 9 * * mon,tue,wed", "clock_in", 1.14,104.11],
-  	["57 0 * * mon,tue,wed", "clock_out", 1.14,104.11],
-  	["5 9 * * thu,fri", "clock_in", 1.14,104.11],
-  	["55 0 * * thu,fri", "clock_out", 1.14,104.11]
+  		["57 0 * * mon,tue,wed", "clock_in", 1.18, 104.09],
+  		["5 9 * * mon,tue,wed", "clock_out", 1.14,104.11],
+  		["55 0 * * thu,fri", "clock_in", 1.14,104.11],
+  		["5 9 * * thu,fri", "clock_out", 1.14,104.11]
   ]
 
   ```
