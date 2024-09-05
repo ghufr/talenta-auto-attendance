@@ -6,6 +6,7 @@ const postClock = (data, env) => {
 			'accept-language': 'en-US,en;q=0.7',
 			authorization: `Bearer ${env.ACCESS_TOKEN}`,
 			'cache-control': 'no-cache',
+			'content-type': 'application/json',
 			dnt: '1',
 			origin: 'https://hr.talenta.co',
 			pragma: 'no-cache',
