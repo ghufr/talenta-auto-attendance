@@ -5,9 +5,9 @@ compatibility_flags = ["nodejs_compat"]
 
 [triggers]
 crons = [
-	"5 9 * * mon,tue,wed",
+	"5 10 * * mon,tue,wed",
 	"57 0 * * mon,tue,wed",
-	"5 9 * * thu,fri",
+	"5 10 * * thu,fri",
 	"55 0 * * thu,fri"
 ]
 
@@ -17,7 +17,7 @@ ORGANIZATION_ID = ""
 USER_ID = ""
 CRONS = [
 	["57 0 * * mon,tue,wed", "clock_in", 1.18, 104.09],
-	["5 9 * * mon,tue,wed", "clock_out", 1.14,104.11],
+	["7 10 * * mon,tue,wed", "clock_out", 1.14,104.11],
 	["55 0 * * thu,fri", "clock_in", 1.14,104.11],
-	["5 9 * * thu,fri", "clock_out", 1.14,104.11]
+	["5 10 * * thu,fri", "clock_out", 1.14,104.11]
 ]
