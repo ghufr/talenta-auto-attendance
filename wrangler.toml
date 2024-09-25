@@ -3,6 +3,10 @@ main = "src/worker.js"
 compatibility_date = "2024-09-03"
 compatibility_flags = ["nodejs_compat"]
 
+kv_namespaces = [
+  { binding = "TALENTA", id = "<KV_ID>" }
+]
+
 [triggers]
 crons = [
 	"5 10 * * mon,tue,wed",
@@ -12,9 +16,11 @@ crons = [
 ]
 
 [vars]
-HOUR_ID = ""
-ORGANIZATION_ID = ""
-USER_ID = ""
+CLIENT_ID = "QOA8dzKDsDAO3a08"
+CODE_VERIFIER = "QanKNLpUKfquw-J3j2d6mwNrxcQ6cvvAWy9QoZ7t4Fy9-VNUpQyOdb30dgKIsWT272LEjp_3Dzv7mm5Pg8fJ6A"
+HOUR_ID = "<HOUR_ID>"
+ORGANIZATION_ID = "<ORGANIZATION_ID>"
+USER_ID = "<USER_ID>"
 CRONS = [
 	["57 0 * * mon,tue,wed", "clock_in", 1.18, 104.09],
 	["7 10 * * mon,tue,wed", "clock_out", 1.14,104.11],

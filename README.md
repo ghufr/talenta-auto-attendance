@@ -43,12 +43,30 @@ A cloudflare worker script to call talenta api and simulate the check in and che
 
 - Login to your cloudflare account
 
-  `npx wrangler login`
+  ```bash
+  npx wrangler login
+  ```
 
 - Deploy the worker
 
-  `npx wrangler deploy`
+  ```bash
+  npx wrangler deploy
+  ```
 
-- Update access token (get from talenta mobile api)
+- Create a KV namespace
 
-  `npx wrangler secret put ACCESS_TOKEN`
+  ```bash
+  npx wrangler kv namespace create TALENTA
+  ```
+
+  copy the id to `wrangler.toml` -> `<KV_ID>`
+
+- Create KV key pair
+
+  ```bash
+  npx wrangler kv key put ACCESS_TOKEN <TALENTA_ACCESS_TOKEN> --namespace-id <KV_ID>
+  ```
+
+  ```bash
+  npx wrangler kv key put REFRESH_TOKEN <TALENTA_REFRESH_TOKEN> --namespace-id <KV_ID>
+  ```
