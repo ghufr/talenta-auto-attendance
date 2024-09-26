@@ -13,8 +13,7 @@ A cloudflare worker script to call talenta api and simulate the check in and che
 - Edit `wrangler.toml` file as you need:
 
   ```toml
-
-  # All the cron is in UTC time
+  # All the cron is in UTC
   [triggers]
   crons = [
   	"57 0 * * mon,tue,wed", # clock in time (monday - wednesday)
@@ -40,6 +39,8 @@ A cloudflare worker script to call talenta api and simulate the check in and che
   ]
 
   ```
+
+  Check your cron here, remember the cron time is in UTC: https://crontab.guru/
 
 - Login to your cloudflare account
 
@@ -70,3 +71,37 @@ A cloudflare worker script to call talenta api and simulate the check in and che
   ```bash
   npx wrangler kv key put REFRESH_TOKEN <TALENTA_REFRESH_TOKEN> --namespace-id <KV_ID>
   ```
+
+- Deploy your app to Cloudflare
+  ```bash
+  npx wrangler publish
+  ```
+
+### How to get Authentication Token
+
+- Login to Talenta web in desktop
+- Right click -> Inspect element -> Console
+- Paste and run this script
+
+```js
+const accessToken = await cookieStore.get('_session_token').then(({ value }) => decodeURIComponent(value).split('"').at(-2));
+
+const attendances = await fetch(
+	`https://api.mekari.com/internal/talenta-attendance-web/v2/organisations/${companyId}/summary_attendance_clocks?start_date=${
+		new Date().toISOString().split('T')[0]
+	}&source=web&sort=schedule_date&order=asc&organisation_user_id=${userId}&page=1&limit=200`,
+	{
+		headers: {
+			Authorization: `Bearer ${accessToken}`,
+		},
+	}
+)
+	.then((res) => res.json())
+	.catch(() => {});
+
+console.log('ACCESS_TOKEN: ' + accessToken);
+console.log('REFRESH_TOKEN: ' + 'NOT YET SUPPORTED');
+console.log('COMPANY_ID: ' + companyId);
+console.log('HOUR_ID: ' + attendances.data[0].attributes.attendance_office_hour_id);
+console.log('USER_ID: ' + userId);
+```
