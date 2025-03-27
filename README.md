@@ -1,89 +1,96 @@
-## Talenta Auto Attendance
+# Talenta Auto Attendance
 
-### Summary
+Automate your Talenta attendance with this Cloudflare Worker script that simulates check-in and check-out processes using scheduled cron jobs.
 
-A cloudflare worker script to call talenta api and simulate the check in and check out processes. Running automatically using cron job.
+## Prerequisites
 
-### Requirements
+- A Cloudflare account
+- Node.js and npm installed
+- Basic understanding of cron schedules
 
-- Cloudflare account & project
+## Installation
 
-### Setup
+1. Clone this repository
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-- Edit `wrangler.toml` file as you need:
+## Configuration Steps
 
-  ```toml
-  # All the cron is in UTC
-  [triggers]
-  crons = [
-  	"57 0 * * mon,tue,wed", # clock in time (monday - wednesday)
-  	"7 10 * * mon,tue,wed", # clock out  time (monday - wednesday)
-  	"55 0 * * thu,fri", # clock in time (thursday, friday)
-  	"5 10 * * thu,fri" # clock out time (thursday, friday)
-  ]
+### 1. Configure Cron Schedule
 
-  [vars]
-  # get HOUR_ID, ORGANIZATION_ID, USER_ID from talenta web api
-  HOUR_ID = ""
-  ORGANIZATION_ID = ""
-  USER_ID = ""
-  CRONS = [
-  	# Item 1: Should match the trigger crons
-  	# Item 2: event type (clock_in / clock_out)
-  	# Item 3: latitude
-  	# Item 4: longitude
-  		["57 0 * * mon,tue,wed", "clock_in", 1.18, 104.09],
-  		["7 10 * * mon,tue,wed", "clock_out", 1.14,104.11],
-  		["55 0 * * thu,fri", "clock_in", 1.14,104.11],
-  		["5 10 * * thu,fri", "clock_out", 1.14,104.11]
-  ]
+Edit `wrangler.toml` to set your check-in/check-out schedule. Times are in UTC.
 
-  ```
+```toml
+[triggers]
+crons = [
+    "57 0 * * mon,tue,wed",  # 07:57 AM (UTC+7) Mon-Wed Check-in
+    "7 10 * * mon,tue,wed",  # 05:07 PM (UTC+7) Mon-Wed Check-out
+    "55 0 * * thu,fri",      # 07:55 AM (UTC+7) Thu-Fri Check-in
+    "5 10 * * thu,fri"       # 05:05 PM (UTC+7) Thu-Fri Check-out
+]
+```
 
-  Check your cron here, remember the cron time is in UTC: https://crontab.guru/
+> 💡 Verify your cron schedule at [crontab.guru](https://crontab.guru/)
 
-- Login to your cloudflare account
+### 2. Set Required Variables
 
-  ```bash
-  npx wrangler login
-  ```
+In `wrangler.toml`, configure your Talenta details:
 
-- Deploy the worker
+```toml
+[vars]
+HOUR_ID = ""           # From Talenta API
+ORGANIZATION_ID = ""   # Your company ID
+USER_ID = ""          # Your user ID
 
-  ```bash
-  npx wrangler deploy
-  ```
+# Configure check-in/out locations
+CRONS = [
+    # Format: [cron_schedule, event_type, latitude, longitude]
+    ["57 0 * * mon,tue,wed", "clock_in", 1.18, 104.09],
+    ["7 10 * * mon,tue,wed", "clock_out", 1.14, 104.11],
+    ["55 0 * * thu,fri", "clock_in", 1.14, 104.11],
+    ["5 10 * * thu,fri", "clock_out", 1.14, 104.11]
+]
+```
 
-- Create a KV namespace
+### 3. Deploy to Cloudflare
 
-  ```bash
-  npx wrangler kv namespace create TALENTA
-  ```
+```bash
+# Login to Cloudflare
+npx wrangler login
 
-  copy the id to `wrangler.toml` -> `<KV_ID>`
+# Deploy the worker
+npx wrangler deploy
+```
 
-- Create KV key pair
+### 4. Set Up KV Storage
 
-  ```bash
-  npx wrangler kv key put ACCESS_TOKEN <TALENTA_ACCESS_TOKEN> --namespace-id <KV_ID>
-  ```
+```bash
+# Create KV namespace
+npx wrangler kv namespace create TALENTA
 
-  ```bash
-  npx wrangler kv key put REFRESH_TOKEN <TALENTA_REFRESH_TOKEN> --namespace-id <KV_ID>
-  ```
+# Add tokens to KV storage
+npx wrangler kv key put ACCESS_TOKEN <TALENTA_ACCESS_TOKEN> --namespace-id <KV_ID>
+npx wrangler kv key put REFRESH_TOKEN <TALENTA_REFRESH_TOKEN> --namespace-id <KV_ID>
+```
 
-- Deploy your app to Cloudflare
-  ```bash
-  npx wrangler publish
-  ```
+> ⚠️ Replace `<KV_ID>` with the ID provided after creating the namespace
 
-### How to get Authentication Token
+### 5. Publish Your App
 
-- Login to Talenta web in desktop
-- Right click -> Inspect element -> Console
-- Paste and run this script
+```bash
+npx wrangler publish
+```
 
-```js
+## Getting Your Talenta Tokens
+
+1. Open Talenta in your desktop browser
+2. Right-click → Inspect Element → Console
+3. Paste and run this script:
+
+```javascript
+// Get access token and attendance details
 const accessToken = await cookieStore.get('_session_token').then(({ value }) => decodeURIComponent(value).split('"').at(-2));
 
 const attendances = await fetch(
@@ -99,9 +106,22 @@ const attendances = await fetch(
 	.then((res) => res.json())
 	.catch(() => {});
 
+// Display required information
 console.log('ACCESS_TOKEN: ' + accessToken);
 console.log('REFRESH_TOKEN: ' + 'NOT YET SUPPORTED');
 console.log('COMPANY_ID: ' + companyId);
 console.log('HOUR_ID: ' + attendances.data[0].attributes.attendance_office_hour_id);
 console.log('USER_ID: ' + userId);
 ```
+
+## Troubleshooting
+
+- Make sure all times in `wrangler.toml` are in UTC
+- Verify your latitude/longitude coordinates are correct
+- Ensure your access token is valid and properly set in KV storage
+
+## License
+
+GNU General Public License v3.0
+
+This project is licensed under the GNU General Public License v3.0 - see the [LICENSE](LICENSE) file for details.

@@ -1,20 +1,44 @@
 {
 	"name": "talenta-auto-attendance",
 	"version": "1.0.0",
+	"description": "Automate your Talenta attendance with Cloudflare Worker script that simulates check-in and check-out processes using scheduled cron jobs",
 	"main": "src/worker.js",
 	"scripts": {
 		"deploy": "wrangler deploy",
 		"dev": "wrangler dev",
-		"start": "wrangler dev"
+		"start": "wrangler dev",
+		"test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
 	},
 	"keywords": [
-		"Talenta",
-		"Script",
-		"Attendance",
-		"Cloudflare"
+		"talenta",
+		"script",
+		"attendance",
+		"cloudflare",
+		"automation",
+		"cron",
+		"worker"
 	],
-	"author": "Ghufron Fikrianto",
+	"author": {
+		"name": "Ghufron",
+		"email": "ghufronfr@gmail.com",
+		"url": "https://github.com/ghufr"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/ghufr/talenta-auto-attendance.git"
+	},
+	"bugs": {
+		"url": "https://github.com/ghufr/talenta-auto-attendance/issues"
+	},
+	"homepage": "https://github.com/ghufr/talenta-auto-attendance#readme",
 	"type": "module",
-	"license": "ISC",
-	"description": ""
+	"license": "GPL-3.0",
+	"devDependencies": {
+		"@babel/core": "^7.26.10",
+		"@babel/preset-env": "^7.26.9",
+		"jest": "^29.7.0"
+	},
+	"engines": {
+		"node": ">=16.0.0"
+	}
 }

@@ -7,6 +7,9 @@ kv_namespaces = [
   { binding = "TALENTA", id = "<KV_ID>" }
 ]
 
+[observability]
+enabled = true
+
 [triggers]
 crons = [
 	"5 10 * * mon,tue,wed",
