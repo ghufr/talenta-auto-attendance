@@ -12,7 +12,7 @@ Automate your Talenta attendance with this Cloudflare Worker script that simulat
 
 1. Clone this repository
 2. Install dependencies:
-   ```bash
+   ```shell
    npm install
    ```
 
@@ -56,7 +56,7 @@ CRONS = [
 
 ### 3. Deploy to Cloudflare
 
-```bash
+```shell
 # Login to Cloudflare
 npx wrangler login
 
@@ -66,7 +66,7 @@ npx wrangler deploy
 
 ### 4. Set Up KV Storage
 
-```bash
+```shell
 # Create KV namespace
 npx wrangler kv namespace create TALENTA
 
@@ -79,7 +79,7 @@ npx wrangler kv key put REFRESH_TOKEN <TALENTA_REFRESH_TOKEN> --namespace-id <KV
 
 ### 5. Publish Your App
 
-```bash
+```shell
 npx wrangler publish
 ```
 
