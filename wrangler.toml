@@ -1,21 +1,25 @@
 name = "talenta-auto-attendance-v2"
-main = "src/worker.js"
-compatibility_date = "2024-09-03"
+main = "src/worker.ts"
+compatibility_date = "2025-02-04"
 compatibility_flags = ["nodejs_compat"]
+workers_dev = false
 
 kv_namespaces = [
-  { binding = "TALENTA", id = "<KV_ID>" }
+  { binding = "TALENTA", id = "<KV_ID>", preview_id = "6ec45f1f1c0440ff8297a7dbafcf0aca"  }
 ]
 
 [observability]
 enabled = true
 
+[placement]
+mode = "smart"
+
 [triggers]
 crons = [
-	"5 10 * * mon,tue,wed",
 	"57 0 * * mon,tue,wed",
+	"7 10 * * mon,tue,wed",
+	"55 0 * * thu,fri",
 	"5 10 * * thu,fri",
-	"55 0 * * thu,fri"
 ]
 
 [vars]
@@ -25,8 +29,8 @@ HOUR_ID = "<HOUR_ID>"
 ORGANIZATION_ID = "<ORGANIZATION_ID>"
 USER_ID = "<USER_ID>"
 CRONS = [
-	["57 0 * * mon,tue,wed", "clock_in", 1.18, 104.09],
-	["7 10 * * mon,tue,wed", "clock_out", 1.14,104.11],
-	["55 0 * * thu,fri", "clock_in", 1.14,104.11],
-	["5 10 * * thu,fri", "clock_out", 1.14,104.11]
+	["57 0 * * mon,tue,wed", "clock_in", 1.1411766,104.119251],
+	["7 10 * * mon,tue,wed", "clock_out", 1.1859393,104.0988311],
+	["55 0 * * thu,fri", "clock_in", 1.1411766,104.119251],
+	["5 10 * * thu,fri", "clock_out", 1.1859393,104.0988311]
 ]

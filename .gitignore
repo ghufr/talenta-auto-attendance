@@ -131,8 +131,10 @@ dist
 
 *.local.*
 *.production.*
+wrangler.dev*
+
 
 # wrangler project
 
-.dev.vars
+.dev.vars*
 .wrangler/

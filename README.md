@@ -71,11 +71,11 @@ npx wrangler deploy
 npx wrangler kv namespace create TALENTA
 
 # Add tokens to KV storage
-npx wrangler kv key put ACCESS_TOKEN <TALENTA_ACCESS_TOKEN> --namespace-id <KV_ID>
-npx wrangler kv key put REFRESH_TOKEN <TALENTA_REFRESH_TOKEN> --namespace-id <KV_ID>
+npx wrangler kv key put ACCESS_TOKEN <TALENTA_ACCESS_TOKEN> --binding TALENTA
+npx wrangler kv key put REFRESH_TOKEN <TALENTA_REFRESH_TOKEN> --binding TALENTA
+npx wrangler secret put TELEGRAM_BOT_TOKEN
+npx wrangler secret put TELEGRAM_CHAT_ID
 ```
-
-> ⚠️ Replace `<KV_ID>` with the ID provided after creating the namespace
 
 ### 5. Publish Your App
 
@@ -114,10 +114,22 @@ console.log('HOUR_ID: ' + attendances.data[0].attributes.attendance_office_hour_
 console.log('USER_ID: ' + userId);
 ```
 
+## Running Locally
+
+To run the project locally for development and testing:
+
+1. Make sure you have completed the configuration steps in `wrangler.toml`
+2. Start the development server:
+   ```shell
+   npx wrangler dev --test-scheduled
+   ```
+3. The worker will be available at `http://localhost:8787/__scheduled?cron=<CRON>`
+
+> 💡 Note: When running locally, you'll need to manually trigger the cron jobs using the development server's interface.
+
 ## Troubleshooting
 
 - Make sure all times in `wrangler.toml` are in UTC
-- Verify your latitude/longitude coordinates are correct
 - Ensure your access token is valid and properly set in KV storage
 
 ## License
