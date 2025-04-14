@@ -50,21 +50,21 @@ export default {
 			const refresh_token = await env.TALENTA.get('REFRESH_TOKEN');
 			if (!refresh_token) throw new Error('No refresh token found');
 
-			// log('Refreshing access token');
-			// const tokenData = {
-			// 	grant_type: 'refresh_token',
-			// 	client_id: env.CLIENT_ID,
-			// 	refresh_token,
-			// 	code_verifier: env.CODE_VERIFIER,
-			// };
+			log('Refreshing access token');
+			const tokenData = {
+				grant_type: 'refresh_token',
+				client_id: env.CLIENT_ID,
+				refresh_token,
+				code_verifier: env.CODE_VERIFIER,
+			};
 
-			// const token = await talentaApi.auth.refreshToken(tokenData);
+			const token = await talentaApi.auth.refreshToken(tokenData);
 
-			// if (!token?.access_token) throw new Error('No access token received from refresh');
+			if (!token.success && !token.data?.access_token) throw new Error('No access token received from refresh');
 
-			// await env.TALENTA.put('ACCESS_TOKEN', token.access_token);
-			// await env.TALENTA.put('REFRESH_TOKEN', token.refresh_token);
-			// log('Token successfully refreshed and stored');
+			await env.TALENTA.put('ACCESS_TOKEN', token.data.access_token);
+			await env.TALENTA.put('REFRESH_TOKEN', token.data.refresh_token);
+			log('Token successfully refreshed and stored');
 
 			// Send success notification
 			if (isNotificationEnabled) {
